@@ -1,5 +1,6 @@
 import {createServer} from "node:http";
 import { sendResponse } from "./utility";
+import { orderRoute } from "./routes/order.route";
 
 
 const server = createServer((req,res)=>{
@@ -7,7 +8,11 @@ const server = createServer((req,res)=>{
    const url = req.url ?? "/"
    
    if(url === "/"){
-    sendResponse(res,{message:"Welcome to my server"},200)
+    sendResponse(res,{message:"Welcome to our Foodi server"},200)
+    return
+   }
+   if(url.startsWith("/orders")){
+    orderRoute(req,res)
     return
    }
 
