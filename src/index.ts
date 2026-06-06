@@ -1,7 +1,16 @@
 import {createServer} from "node:http";
 
 const server = createServer((req,res)=>{
- res.end("hello")
+
+   const url = req.url ?? "/"
+   
+   if(url === "/"){
+     res.writeHead(200,{"Content-Type":"application/json"})
+ return res.end(JSON.stringify({message:"This is json"}))
+   }
+
+    res.writeHead(404,{"Content-Type":"application/json"})
+ res.end(JSON.stringify({message:"Message not found"}))
 })
 
 server.listen(3000,()=>{
