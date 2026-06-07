@@ -1,6 +1,7 @@
 import path from "path";
 import type { order } from "../types";
 import fs from "fs/promises";
+import type { promises } from "fs";
 
 const DB_PATH = path.join(process.cwd(),"db","data.json")
 
@@ -52,17 +53,38 @@ class OrderService{
     await this.writeData(data);
 
     
+} 
+// update
+   async update(id:string,updates: Partial<Omit<order,"id">>):Promise<order| null>{
+          const data = await this.readData()
+
+          const i = data.findIndex(order=>order.id === id)
+
+          if(i===-1) return null
+
+          data[i] = {...data[i], ...updates} as order
+
+          await this.writeData(data)
+
+          return data[i]
+   }
+   async Delete(id:string){
+     const data = await this.readData()
+
+     const i = data.findIndex(order=>order.id === id)
+
+          if(i===-1) return false
+
+          data.splice(i,1)
+
+          await this.writeData(data)
+          return true
+
+
+   }
 }
-}
 
 
-const orderService = new OrderService()
+export const orderService = new OrderService()
 
-// await orderService.create({
-//     customerName:"Liam",
-//     FoodName:"ALu",
-//     price:230,
-//     quantity:2
-// })
 
-console.log(await orderService.getbyId("3"))
