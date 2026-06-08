@@ -1,6 +1,7 @@
 import {createServer} from "node:http";
 import { sendResponse } from "./utility";
 import { orderRoute } from "./routes/order.route";
+import type { Req } from "./types";
 
 
 const server = createServer((req,res)=>{
@@ -12,7 +13,7 @@ const server = createServer((req,res)=>{
     return
    }
    if(url.startsWith("/orders")){
-    orderRoute(req,res)
+    orderRoute(req as Req,res)
     return
    }
 
