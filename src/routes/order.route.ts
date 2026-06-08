@@ -1,10 +1,10 @@
 import { orderService } from "../service/order.service";
-import type { Req, Res } from "../types";
+import type { order, Req, Res } from "../types";
 import { extractRequestInfo, sendResponse } from "../utility";
 
 export const orderRoute=async (req:Req,res:Res)=>{
 
-    const {url,params} = extractRequestInfo(req)
+    const {url,params} =await extractRequestInfo<Omit<order,"id">>(req)
     const orderId = params[1]
     if(req.method ==="GET" && !orderId ){
         const orders = await orderService.get()
@@ -23,4 +23,5 @@ export const orderRoute=async (req:Req,res:Res)=>{
         sendResponse(res,{message:"orders are deleted",data:deleted,error:deleted ? false : true},deleted?200:404)
         return
     }
+    if(req.method === "POST")
 }
